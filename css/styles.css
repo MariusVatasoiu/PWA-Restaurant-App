@@ -71,7 +71,7 @@ nav h1 a {
     background-color: #eee;
     font-size: 17px;
     margin: 0;
-    width: calc(50% - 80px);
+    width: 100%;
 }
 
 /* Display list items side by side */
@@ -191,11 +191,9 @@ nav h1 a {
 }
 .inside #map-container {
   background: blue none repeat scroll 0 0;
-  height: 87%;
-  position: fixed;
-  right: 0;
-  top: 80px;
-  width: 50%;
+  height: 50vh;
+  margin-top: 80px;
+  width: 100%;
 }
 .inside #map {
   background-color: #ccc;
@@ -239,8 +237,8 @@ nav h1 a {
 #restaurant-container, #reviews-container {
   border-bottom: 1px solid #d9d9d9;
   border-top: 1px solid #fff;
-  padding: 140px 40px 30px;
-  width: 50%;
+  padding: 30px 0;
+  width: 100%;
 }
 #reviews-container {
   padding: 30px 40px 80px;
@@ -257,8 +255,8 @@ nav h1 a {
   padding: 0;
 }
 #reviews-list li {
-  background-color: #fff;
-    border: 2px solid #f3f3f3;
+	background-color: #fff;
+	border: 2px solid #f3f3f3;
   display: block;
   list-style-type: none;
   margin: 0 0 30px;
@@ -272,4 +270,47 @@ nav h1 a {
 }
 #restaurant-hours td {
   color: #666;
+}
+
+
+/* Responsive */
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+	
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+	
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+	.inside #map-container {
+		height: 87%;
+		position: fixed;
+		right: 0;
+		top: 80px;
+		width: 50%;
+	}
+	#restaurant-container,
+	#reviews-container {
+		border-bottom: 1px solid #d9d9d9;
+		border-top: 1px solid #fff;
+		padding: 140px 40px 30px;
+		width: 50%;
+	}
+	#breadcrumb {
+		padding: 10px 40px 16px;
+		list-style: none;
+		background-color: #eee;
+		font-size: 17px;
+		margin: 0;
+		width: calc(50% - 80px);
+	}
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+	
 }
