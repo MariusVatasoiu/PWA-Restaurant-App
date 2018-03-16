@@ -1,6 +1,8 @@
 @charset "utf-8";
 /* CSS Document */
-
+*, ::after, ::before {
+	box-sizing: border-box;
+}
 body,td,th,p{
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 10pt;
@@ -35,6 +37,15 @@ h1, h2, h3, h4, h5, h6 {
 article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+header{
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 2;
+}
+main{
+	padding-top: 80px;
+}
 #maincontent {
   background-color: #f3f3f3;
   min-height: 100%;
@@ -48,6 +59,9 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
   text-align: center;
   text-transform: uppercase;
 }
+
+
+
 /* ====================== Navigation ====================== */
 nav {
   width: 100%;
@@ -100,7 +114,6 @@ nav h1 a {
 /* ====================== Map ====================== */
 #map {
   height: 400px;
-  width: 100%;
   background-color: #ccc;
 }
 /* ====================== Restaurant Filtering ====================== */
@@ -189,7 +202,7 @@ nav h1 a {
   width: 100%;
   z-index: 1000;
 }
-.inside #map-container {
+/* .inside #map-container {
   background: blue none repeat scroll 0 0;
   height: 50vh;
   margin-top: 80px;
@@ -199,7 +212,7 @@ nav h1 a {
   background-color: #ccc;
   height: 100%;
   width: 100%;
-}
+} */
 .inside #footer {
   bottom: 0;
   position: absolute;
@@ -286,13 +299,13 @@ nav h1 a {
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
-	.inside #map-container {
+	/* .inside #map-container {
 		height: 87%;
 		position: fixed;
 		right: 0;
 		top: 80px;
 		width: 50%;
-	}
+	} */
 	#restaurant-container,
 	#reviews-container {
 		border-bottom: 1px solid #d9d9d9;
@@ -307,6 +320,13 @@ nav h1 a {
 		font-size: 17px;
 		margin: 0;
 		width: calc(50% - 80px);
+	}
+	#map-container{
+		position: fixed;
+		right: 0;
+	}
+	#map{
+		height: 100vh;
 	}
 }
 
