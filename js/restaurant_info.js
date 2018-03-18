@@ -56,7 +56,8 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   address.innerHTML = restaurant.address;
 
   const image = document.getElementById('restaurant-img');
-  image.className = 'restaurant-img'
+	image.className = 'restaurant-img';
+	image.alt = restaurant.name;
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
 
   const cuisine = document.getElementById('restaurant-cuisine');
@@ -116,23 +117,35 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
  * Create review HTML and add it to the webpage.
  */
 createReviewHTML = (review) => {
-  const li = document.createElement('li');
+	const li = document.createElement('li');
+	const reviewTitle = document.createElement('div');
+	reviewTitle.className = 'flex-container review-title';
+
   const name = document.createElement('p');
   name.innerHTML = review.name;
-  li.appendChild(name);
+	name.className = 'col';
+	reviewTitle.appendChild(name);
 
   const date = document.createElement('p');
   date.innerHTML = review.date;
-  li.appendChild(date);
+	date.className = 'col text-right';
+	reviewTitle.appendChild(date);
+
+	li.appendChild(reviewTitle);
+
+	const reviewContent = document.createElement('div');
+	reviewContent.className = 'review-content';
 
   const rating = document.createElement('p');
 	rating.innerHTML = `Rating: ${review.rating}`;
 	rating.classList.add('badge');
-  li.appendChild(rating);
+  reviewContent.appendChild(rating);
 
   const comments = document.createElement('p');
   comments.innerHTML = review.comments;
-  li.appendChild(comments);
+	reviewContent.appendChild(comments);
+	
+	li.appendChild(reviewContent);
 
   return li;
 }
