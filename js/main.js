@@ -141,7 +141,12 @@ createRestaurantHTML = (restaurant) => {
   const image = document.createElement('img');
 	image.className = 'restaurant-img';
 	image.alt = restaurant.name;
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+	image.src = DBHelper.imageUrlForRestaurant(restaurant);
+	
+	// Set srcset for responsive
+	const image480 = image.src.replace(/(\.[\w\d_-]+)$/i, '-480$1')
+	image.setAttribute('srcset', `${image480} 480w, ${image.src} 800w`);
+	
   li.append(image);
 
   const name = document.createElement('h1');
@@ -159,7 +164,9 @@ createRestaurantHTML = (restaurant) => {
   const more = document.createElement('a');
   more.innerHTML = 'View Details';
   more.href = DBHelper.urlForRestaurant(restaurant);
-  li.append(more)
+	li.append(more);
+	
+	li.setAttribute('role', 'article');
 
   return li
 }

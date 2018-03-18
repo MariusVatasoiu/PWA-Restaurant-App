@@ -59,6 +59,10 @@ main{
   text-align: center;
   text-transform: uppercase;
 }
+select:focus,
+a:focus{
+	outline: 2px solid #1a4698;
+}
 
 
 
@@ -203,17 +207,6 @@ nav h1 a {
   width: 100%;
   z-index: 1000;
 }
-/* .inside #map-container {
-  background: blue none repeat scroll 0 0;
-  height: 50vh;
-  margin-top: 80px;
-  width: 100%;
-}
-.inside #map {
-  background-color: #ccc;
-  height: 100%;
-  width: 100%;
-} */
 .inside #footer {
   bottom: 0;
   /* position: absolute; */
