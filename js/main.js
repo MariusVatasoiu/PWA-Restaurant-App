@@ -136,8 +136,14 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
  * Create restaurant HTML.
  */
 createRestaurantHTML = (restaurant) => {
-  const li = document.createElement('li');
+	const article = document.createElement('article');
+	article.className = 'flex-container';
+	const articleThumb = document.createElement('div');
+	articleThumb.className = 'col-sm-6 col-md-5';
+	const articleContent = document.createElement('div');
+	articleContent.className = 'col-sm-6 col-md-7 restaurant-content';
 
+	/* Thumbnail */
   const image = document.createElement('img');
 	image.className = 'restaurant-img';
 	image.alt = restaurant.name;
@@ -146,29 +152,31 @@ createRestaurantHTML = (restaurant) => {
 	// Set srcset for responsive
 	const image480 = image.src.replace(/(\.[\w\d_-]+)$/i, '-480$1')
 	image.setAttribute('srcset', `${image480} 480w, ${image.src} 800w`);
-	
-  li.append(image);
+	image.setAttribute('sizes', '(max-width: 576px) 480px, (max-width: 1200px) 480px');
 
+	articleThumb.append(image);
+	article.append(articleThumb);
+
+	/* Content */
   const name = document.createElement('h1');
   name.innerHTML = restaurant.name;
-  li.append(name);
+  articleContent.append(name);
 
   const neighborhood = document.createElement('p');
   neighborhood.innerHTML = restaurant.neighborhood;
-  li.append(neighborhood);
+  articleContent.append(neighborhood);
 
   const address = document.createElement('p');
   address.innerHTML = restaurant.address;
-  li.append(address);
+  articleContent.append(address);
 
   const more = document.createElement('a');
   more.innerHTML = 'View Details';
   more.href = DBHelper.urlForRestaurant(restaurant);
-	li.append(more);
-	
-	li.setAttribute('role', 'article');
+	articleContent.append(more);
+	article.append(articleContent);
 
-  return li
+  return article;
 }
 
 /**
@@ -184,3 +192,4 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     self.markers.push(marker);
   });
 }
+
