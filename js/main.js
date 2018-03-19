@@ -138,7 +138,8 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
  */
 createRestaurantHTML = (restaurant) => {
 	const article = document.createElement('article');
-	article.className = 'flex-container';
+  article.className = 'flex-container';
+  article.setAttribute('aria-label', restaurant.name);
 	const articleThumb = document.createElement('div');
 	articleThumb.className = 'col-sm-6 col-md-5';
 	const articleContent = document.createElement('div');
@@ -174,6 +175,7 @@ createRestaurantHTML = (restaurant) => {
   const more = document.createElement('a');
   more.innerHTML = 'View Details';
   more.href = DBHelper.urlForRestaurant(restaurant);
+  more.setAttribute('aria-label', 'View Details about '+ restaurant.name);
 	articleContent.append(more);
 	article.append(articleContent);
 
@@ -198,7 +200,28 @@ registerServiceWorker = () => {
 	if ('serviceWorker' in navigator) {
 		navigator.serviceWorker.register('sw.js', {
 			scope: './'
-		});
+		}).then((registration) => {
+      var serviceWorker;
+      if (registration.installing) {
+          serviceWorker = registration.installing;
+          console.log('installing');
+      } else if (registration.waiting) {
+          serviceWorker = registration.waiting;
+          console.log('waiting');
+      } else if (registration.active) {
+          serviceWorker = registration.active;
+          console.log('active');
+      }
+      if (serviceWorker) {
+          // logState(serviceWorker.state);
+          serviceWorker.addEventListener('statechange', function (e) {
+              // logState(e.target.state);
+              console.log(e.target.state);
+          });
+      }
+    }).catch(error => {
+      console.log(error);
+    });
 		// navigator.serviceWorker.register('/sw.js')
 		// .then(function(reg) {
 		// 	// registration worked

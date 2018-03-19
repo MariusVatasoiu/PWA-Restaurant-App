@@ -10,7 +10,9 @@ self.addEventListener('install', function(evt) {
 self.addEventListener('fetch', function(evt) {
 	console.log('The service worker is serving the asset.');
 	
-	evt.respondWith(fromCache(evt.request));
+	evt.respondWith(fromCache(evt.request).catch((error) => {
+    console.log(error);
+  }));
 
 	evt.waitUntil(update(evt.request));
 });
@@ -21,8 +23,8 @@ function precache() {
 			'./index.html',
 			'./restaurant.html',
 			'./css/styles.css',
-			'./js/main.js',
-			'./img'
+      './js/main.js',
+      './img'
     ]);
   });
 }
@@ -30,7 +32,7 @@ function precache() {
 function fromCache(request) {
   return caches.open(CACHE).then(function (cache) {
     return cache.match(request).then(function (matching) {
-      return matching || Promise.reject('no-match');
+      return matching || fetch(request); //Promise.reject('no-match'); 
     });
   });
 }
