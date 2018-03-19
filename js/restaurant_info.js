@@ -56,8 +56,13 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   address.innerHTML = restaurant.address;
 
   const image = document.getElementById('restaurant-img');
-  image.className = 'restaurant-img'
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+	image.className = 'restaurant-img';
+	image.alt = restaurant.name;
+	image.src = DBHelper.imageUrlForRestaurant(restaurant);
+	
+	// Set srcset for responsive
+	const image480 = image.src.replace(/(\.[\w\d_-]+)$/i, '-480$1')
+	image.setAttribute('srcset', `${image480} 480w, ${image.src} 800w`);
 
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;
@@ -116,22 +121,35 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
  * Create review HTML and add it to the webpage.
  */
 createReviewHTML = (review) => {
-  const li = document.createElement('li');
+	const li = document.createElement('li');
+	const reviewTitle = document.createElement('div');
+	reviewTitle.className = 'flex-container review-title';
+
   const name = document.createElement('p');
   name.innerHTML = review.name;
-  li.appendChild(name);
+	name.className = 'col';
+	reviewTitle.appendChild(name);
 
   const date = document.createElement('p');
   date.innerHTML = review.date;
-  li.appendChild(date);
+	date.className = 'col text-right';
+	reviewTitle.appendChild(date);
+
+	li.appendChild(reviewTitle);
+
+	const reviewContent = document.createElement('div');
+	reviewContent.className = 'review-content';
 
   const rating = document.createElement('p');
-  rating.innerHTML = `Rating: ${review.rating}`;
-  li.appendChild(rating);
+	rating.innerHTML = `Rating: ${review.rating}`;
+	rating.classList.add('badge');
+  reviewContent.appendChild(rating);
 
   const comments = document.createElement('p');
   comments.innerHTML = review.comments;
-  li.appendChild(comments);
+	reviewContent.appendChild(comments);
+	
+	li.appendChild(reviewContent);
 
   return li;
 }
@@ -143,6 +161,7 @@ fillBreadcrumb = (restaurant=self.restaurant) => {
   const breadcrumb = document.getElementById('breadcrumb');
   const li = document.createElement('li');
   li.innerHTML = restaurant.name;
+  li.setAttribute('aria-current', 'page');
   breadcrumb.appendChild(li);
 }
 

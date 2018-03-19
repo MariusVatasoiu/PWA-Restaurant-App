@@ -1,6 +1,8 @@
 @charset "utf-8";
 /* CSS Document */
-
+*, ::after, ::before {
+	box-sizing: border-box;
+}
 body,td,th,p{
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 10pt;
@@ -35,6 +37,18 @@ h1, h2, h3, h4, h5, h6 {
 article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+header{
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 2;
+}
+main{
+	padding-top: 80px;
+}
+.inside main{
+  padding-top: 131px;
+}
 #maincontent {
   background-color: #f3f3f3;
   min-height: 100%;
@@ -48,12 +62,20 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
   text-align: center;
   text-transform: uppercase;
 }
+select:focus,
+a:focus{
+	outline: 2px solid #1a4698;
+}
+
+
+
 /* ====================== Navigation ====================== */
 nav {
   width: 100%;
   height: 80px;
   background-color: #252831;
-  text-align:center;
+	text-align:center;
+	display: grid;
 }
 nav h1 {
   margin: auto;
@@ -71,7 +93,8 @@ nav h1 a {
     background-color: #eee;
     font-size: 17px;
     margin: 0;
-    width: 100%;
+		width: 100%;
+		box-shadow: 0px 4px 8px #ccc;
 }
 
 /* Display list items side by side */
@@ -100,13 +123,11 @@ nav h1 a {
 /* ====================== Map ====================== */
 #map {
   height: 400px;
-  width: 100%;
   background-color: #ccc;
 }
 /* ====================== Restaurant Filtering ====================== */
 .filter-options {
-  width: 100%;
-  height: 50px;
+  padding-top: 10px;
   background-color: #3397DB;
   align-items: center;
 }
@@ -137,39 +158,39 @@ nav h1 a {
   padding: 30px 15px 60px;
   text-align: center;
 }
-#restaurants-list li {
+#restaurants-list article {
   background-color: #fff;
-  border: 2px solid #ccc;
+  border: 1px solid #ccc;
   font-family: Arial,sans-serif;
   margin: 15px;
-  min-height: 380px;
-  padding: 0 30px 25px;
+  /* min-height: 380px; */
+  padding: 20px;
   text-align: left;
-  width: 270px;
+  border-radius: 3px;
 }
 #restaurants-list .restaurant-img {
   background-color: #ccc;
   display: block;
   margin: 0;
   max-width: 100%;
-  min-height: 248px;
-  min-width: 100%;
+  /* min-height: 248px;
+  min-width: 100%; */
 }
-#restaurants-list li h1 {
+#restaurants-list article h1 {
   color: #f18200;
   font-family: Arial,sans-serif;
   font-size: 14pt;
   font-weight: 200;
   letter-spacing: 0;
   line-height: 1.3;
-  margin: 20px 0 10px;
+  /* margin: 20px 0 10px; */
   text-transform: uppercase;
 }
 #restaurants-list p {
   margin: 0;
   font-size: 11pt;
 }
-#restaurants-list li a {
+#restaurants-list article a {
   background-color: orange;
   border-bottom: 3px solid #eee;
   color: #fff;
@@ -181,6 +202,12 @@ nav h1 a {
   text-decoration: none;
   text-transform: uppercase;
 }
+#restaurants-list article a:hover{
+	background-color: #d08702;
+}
+.restaurant-content{
+	padding-top: 20px;
+}
 
 /* ====================== Restaurant Details ====================== */
 .inside header {
@@ -189,21 +216,10 @@ nav h1 a {
   width: 100%;
   z-index: 1000;
 }
-.inside #map-container {
-  background: blue none repeat scroll 0 0;
-  height: 50vh;
-  margin-top: 80px;
-  width: 100%;
-}
-.inside #map {
-  background-color: #ccc;
-  height: 100%;
-  width: 100%;
-}
 .inside #footer {
   bottom: 0;
-  position: absolute;
-  width: 50%;
+  /* position: absolute; */
+  width: 100%;
 }
 #restaurant-name {
   color: #f18200;
@@ -216,7 +232,7 @@ nav h1 a {
   line-height: 1.1;
 }
 #restaurant-img {
-	width: 90%;
+	width: 100%;
 }
 #restaurant-address {
   font-size: 12pt;
@@ -232,16 +248,16 @@ nav h1 a {
   padding: 2px 0;
   text-align: center;
   text-transform: uppercase;
-	width: 90%;
 }
 #restaurant-container, #reviews-container {
   border-bottom: 1px solid #d9d9d9;
   border-top: 1px solid #fff;
-  padding: 30px 0;
-  width: 100%;
+}
+#restaurant-container{
+	padding: 30px 40px 30px;
 }
 #reviews-container {
-  padding: 30px 40px 80px;
+  padding: 30px 40px 30px;
 }
 #reviews-container h2 {
   color: #f58500;
@@ -256,27 +272,64 @@ nav h1 a {
 }
 #reviews-list li {
 	background-color: #fff;
-	border: 2px solid #f3f3f3;
   display: block;
   list-style-type: none;
   margin: 0 0 30px;
   overflow: hidden;
-  padding: 0 20px 20px;
-  position: relative;
-  width: 85%;
+  /* padding: 0 20px 20px; */
+	position: relative;
+	border-top-left-radius: 30px;
+	border-bottom-right-radius: 30px;
+	box-shadow: 4px 4px 12px #ccc;
 }
 #reviews-list li p {
-  margin: 0 0 10px;
+	margin: 0 0 10px;
 }
 #restaurant-hours td {
   color: #666;
+}
+.review-title{
+	background-color: #252831;
+	padding: 10px 20px;
+}
+.review-title p{
+	color: #FFF;
+	margin: 0 !important;
+	font-size: 16px;
+}
+.review-content{
+	padding: 20px;
+}
+
+
+/* Utils */
+.text-left{
+	text-align: left;
+}
+.text-center{
+	text-align: center;
+}
+.text-right{
+	text-align: right;
+}
+.badge{
+	display: inline-block;
+	background-color: orange;
+	padding: 4px 12px;
+	border-radius: 3px;
+	text-transform: uppercase;
+	color: #FFF;
+	font-weight: bold;
 }
 
 
 /* Responsive */
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {
-	
+	.restaurant-content{
+		padding-top: 0;
+		padding-left: 20px;
+  }
 }
 
 /* Medium devices (tablets, 768px and up) */
@@ -286,28 +339,25 @@ nav h1 a {
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
-	.inside #map-container {
-		height: 87%;
+	.restaurants-section{
+		border-right: 1px solid #ccc;
+	}
+	#restaurant-container {
+		padding: 70px 30px 30px;
+	}
+	#reviews-container {
+		padding: 30px;
+	}
+	#map-container{
 		position: fixed;
 		right: 0;
-		top: 80px;
-		width: 50%;
 	}
-	#restaurant-container,
-	#reviews-container {
-		border-bottom: 1px solid #d9d9d9;
-		border-top: 1px solid #fff;
-		padding: 140px 40px 30px;
-		width: 50%;
-	}
-	#breadcrumb {
-		padding: 10px 40px 16px;
-		list-style: none;
-		background-color: #eee;
-		font-size: 17px;
-		margin: 0;
-		width: calc(50% - 80px);
-	}
+	#map{
+		height: calc(100vh - 80px);
+  }
+  .inside main{
+    padding-top: 80px;
+  }
 }
 
 /* Extra large devices (large desktops, 1200px and up) */
