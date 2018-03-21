@@ -160,7 +160,7 @@ createRestaurantHTML = (restaurant) => {
 	article.append(articleThumb);
 
 	/* Content */
-  const name = document.createElement('h1');
+  const name = document.createElement('h2');
   name.innerHTML = restaurant.name;
   articleContent.append(name);
 
@@ -222,13 +222,5 @@ registerServiceWorker = () => {
     }).catch(error => {
       console.log(error);
     });
-		// navigator.serviceWorker.register('/sw.js')
-		// .then(function(reg) {
-		// 	// registration worked
-		// 	console.log('Registration succeeded. Scope is ' + reg.scope);
-		// }).catch(function(error) {
-		// 	// registration failed
-		// 	console.log('Registration failed with ' + error);
-		// });
 	}
 }
