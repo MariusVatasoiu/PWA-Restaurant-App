@@ -10,7 +10,6 @@ var markers = []
 document.addEventListener('DOMContentLoaded', (event) => {
   fetchNeighborhoods();
 	fetchCuisines();
-	registerServiceWorker();
 });
 
 /**
@@ -148,7 +147,7 @@ createRestaurantHTML = (restaurant) => {
 	/* Thumbnail */
   const image = document.createElement('img');
 	image.className = 'restaurant-img';
-	image.alt = restaurant.name;
+	image.alt = `${restaurant.name} restaurant's photo`;
 	image.src = DBHelper.imageUrlForRestaurant(restaurant);
 	
 	// Set srcset for responsive
@@ -194,33 +193,4 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     });
     self.markers.push(marker);
   });
-}
-
-registerServiceWorker = () => {
-	if ('serviceWorker' in navigator) {
-		navigator.serviceWorker.register('sw.js', {
-			scope: './'
-		}).then((registration) => {
-      var serviceWorker;
-      if (registration.installing) {
-          serviceWorker = registration.installing;
-          console.log('installing');
-      } else if (registration.waiting) {
-          serviceWorker = registration.waiting;
-          console.log('waiting');
-      } else if (registration.active) {
-          serviceWorker = registration.active;
-          console.log('active');
-      }
-      if (serviceWorker) {
-          // logState(serviceWorker.state);
-          serviceWorker.addEventListener('statechange', function (e) {
-              // logState(e.target.state);
-              console.log(e.target.state);
-          });
-      }
-    }).catch(error => {
-      console.log(error);
-    });
-	}
 }
