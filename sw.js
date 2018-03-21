@@ -44,37 +44,3 @@ function update(request) {
     });
   });
 }
-
-
-// const staticCacheName = 'restaurant-static-v1';
-// const contentImgsCache = 'restaurant-content-imgs';
-// const allCaches = [staticCacheName, contentImgsCache];
-
-// self.addEventListener('install', function(event) {
-//   event.waitUntil(
-//     caches.open(staticCacheName).then(function(cache) {
-//       return cache.addAll([
-//         '/',
-//         '/index.html',
-//         '/restaurant.html',
-//         '/js/dbhelper.js',
-//         '/js/main.js',
-//         '/js/restaurant_info.js',
-//         '/css/responsive.css',
-//         '/css/style.css'
-//       ]);
-//     })
-//   )
-// });
-
-// self.addEventListener('fetch', function(event) {
-//   // event.respondWith(
-//   //   caches.match(event.request)
-// 	// );
-	
-// 	event.respondWith(
-// 		caches.match(event.request).then(function (response) {
-// 			return response || fetch(event.request);
-// 		})
-// 	)
-// });
