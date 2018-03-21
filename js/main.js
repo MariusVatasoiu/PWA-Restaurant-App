@@ -147,7 +147,7 @@ createRestaurantHTML = (restaurant) => {
 	/* Thumbnail */
   const image = document.createElement('img');
 	image.className = 'restaurant-img';
-	image.alt = restaurant.name;
+	image.alt = `${restaurant.name} restaurant's photo`;
 	image.src = DBHelper.imageUrlForRestaurant(restaurant);
 	
 	// Set srcset for responsive

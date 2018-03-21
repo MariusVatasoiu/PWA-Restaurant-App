@@ -1,4 +1,5 @@
-var CACHE = 'cache-and-update';
+var cacheWhitelist = ['cache-and-update-v1'];
+var CACHE = cacheWhitelist[0];
 
 self.addEventListener('install', function(evt) {
 	console.log('The service worker is being installed.');
@@ -6,6 +7,21 @@ self.addEventListener('install', function(evt) {
 	evt.waitUntil(precache());
 });
 
+self.addEventListener('activate', function(event) {
+  console.log('Activating new service worker...');
+
+  event.waitUntil(
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(
+        cacheNames.map(function(cacheName) {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+});
 
 self.addEventListener('fetch', function(evt) {
 	console.log('The service worker is serving the asset.');
