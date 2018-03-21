@@ -20,7 +20,7 @@
       <h1><a href="/">Restaurant Reviews</a></h1>
     </nav>
     <!-- Beginning breadcrumb -->
-    <ul id="breadcrumb" class="col-12 col-lg-6 col-xl-5 order-lg-1" role="navigation">
+    <ul id="breadcrumb" class="col-12 col-lg-6 col-xl-5 order-lg-1" role="navigation" aria-label="Breadcrumb">
       <li><a href="/" aria-level="1">Home</a></li>
     </ul>
     <!-- End breadcrumb -->
@@ -32,14 +32,14 @@
   <main id="maincontent" class="flex-container">
     <!-- Beginning map -->
     <section id="map-container" class="col-12 col-lg-6 col-xl-7 order-lg-2">
-      <div id="map"></div>
+      <div id="map" role="application" aria-label="Map with restaurants"></div>
     </section>
 		<!-- End map -->
 		
 		<section class="col-12 col-lg-6 col-xl-5 order-lg-1 restaurants-section">
 			<!-- Beginning restaurant -->
 			<section id="restaurant-container">
-				<h1 id="restaurant-name"></h1>
+				<h2 id="restaurant-name"></h2>
 				<img id="restaurant-img">
 				<p id="restaurant-cuisine"></p>
 				<p id="restaurant-address"></p>

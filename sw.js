@@ -10,7 +10,9 @@ self.addEventListener('install', function(evt) {
 self.addEventListener('fetch', function(evt) {
 	console.log('The service worker is serving the asset.');
 	
-	evt.respondWith(fromCache(evt.request));
+	evt.respondWith(fromCache(evt.request).catch((error) => {
+    console.log(error);
+  }));
 
 	evt.waitUntil(update(evt.request));
 });
@@ -21,8 +23,8 @@ function precache() {
 			'./index.html',
 			'./restaurant.html',
 			'./css/styles.css',
-			'./js/main.js',
-			'./img'
+      './js/main.js',
+      './img'
     ]);
   });
 }
@@ -30,7 +32,7 @@ function precache() {
 function fromCache(request) {
   return caches.open(CACHE).then(function (cache) {
     return cache.match(request).then(function (matching) {
-      return matching || Promise.reject('no-match');
+      return matching || fetch(request); //Promise.reject('no-match'); 
     });
   });
 }
@@ -42,37 +44,3 @@ function update(request) {
     });
   });
 }
-
-
-// const staticCacheName = 'restaurant-static-v1';
-// const contentImgsCache = 'restaurant-content-imgs';
-// const allCaches = [staticCacheName, contentImgsCache];
-
-// self.addEventListener('install', function(event) {
-//   event.waitUntil(
-//     caches.open(staticCacheName).then(function(cache) {
-//       return cache.addAll([
-//         '/',
-//         '/index.html',
-//         '/restaurant.html',
-//         '/js/dbhelper.js',
-//         '/js/main.js',
-//         '/js/restaurant_info.js',
-//         '/css/responsive.css',
-//         '/css/style.css'
-//       ]);
-//     })
-//   )
-// });
-
-// self.addEventListener('fetch', function(event) {
-//   // event.respondWith(
-//   //   caches.match(event.request)
-// 	// );
-	
-// 	event.respondWith(
-// 		caches.match(event.request).then(function (response) {
-// 			return response || fetch(event.request);
-// 		})
-// 	)
-// });

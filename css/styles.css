@@ -46,6 +46,9 @@ header{
 main{
 	padding-top: 80px;
 }
+.inside main{
+  padding-top: 131px;
+}
 #maincontent {
   background-color: #f3f3f3;
   min-height: 100%;
@@ -173,7 +176,7 @@ nav h1 a {
   /* min-height: 248px;
   min-width: 100%; */
 }
-#restaurants-list article h1 {
+#restaurants-list article h2 {
   color: #f18200;
   font-family: Arial,sans-serif;
   font-size: 14pt;
@@ -326,13 +329,13 @@ nav h1 a {
 	.restaurant-content{
 		padding-top: 0;
 		padding-left: 20px;
-	}
+  }
 }
 
 /* Medium devices (tablets, 768px and up) */
-@media (min-width: 768px) {
+/*@media (min-width: 768px) {
 	
-}
+}*/
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
@@ -350,11 +353,14 @@ nav h1 a {
 		right: 0;
 	}
 	#map{
-		height: 100vh;
-	}
+		height: calc(100vh - 80px);
+  }
+  .inside main{
+    padding-top: 80px;
+  }
 }
 
 /* Extra large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) {
+/*@media (min-width: 1200px) {
 	
-}
+}*/
