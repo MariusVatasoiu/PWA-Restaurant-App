@@ -20,6 +20,7 @@ self.addEventListener('fetch', function(evt) {
 function precache() {
   return caches.open(CACHE).then(function (cache) {
     return cache.addAll([
+			'./',
 			'./index.html',
 			'./restaurant.html',
 			'./data/restaurants.json',
@@ -28,6 +29,7 @@ function precache() {
 			'./js/main.js',
 			'./js/restaurant_info.js',
 			'./js/dbhelper.js',
+			'./js/register_sw.js',
 			'./img/1.jpg', './img/1-480.jpg',
 			'./img/2.jpg', './img/2-480.jpg',
 			'./img/3.jpg', './img/3-480.jpg',

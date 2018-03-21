@@ -1,6 +1,4 @@
-registerServiceWorker();
-
-registerServiceWorker = () => {
+const registerServiceWorker = () => {
 	if ('serviceWorker' in navigator) {
 		navigator.serviceWorker.register('sw.js', {
 			scope: './'
@@ -28,3 +26,5 @@ registerServiceWorker = () => {
     });
 	}
 }
+
+registerServiceWorker();
