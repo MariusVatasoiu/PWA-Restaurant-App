@@ -54,7 +54,7 @@ gulp.task('scripts-dist', function(){
 });
 
 gulp.task('copy-html', function(){
-  gulp.src('./*.html')
+  gulp.src(['./*.html', './sw.js'])
       .pipe(gulp.dest('./dist'))
 });
 
