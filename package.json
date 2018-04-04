@@ -1,5 +1,5 @@
 {
-  "name": "mws-restaurant-stage-1",
+  "name": "mws-restaurant-stage-2",
   "version": "1.0.0",
   "description": "Restaurant project for Mobile Web Specialist",
   "main": "main.js",
@@ -8,24 +8,27 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MariusVatasoiu/mws-restaurant-stage-1.git"
+    "url": "git+https://github.com/MariusVatasoiu/mws-restaurant-stage-2.git"
   },
   "author": "Marius Vatasoiu",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/MariusVatasoiu/mws-restaurant-stage-1/issues"
+    "url": "https://github.com/MariusVatasoiu/mws-restaurant-stage-2/issues"
   },
-  "homepage": "https://github.com/MariusVatasoiu/mws-restaurant-stage-1#readme",
+  "homepage": "https://github.com/MariusVatasoiu/mws-restaurant-stage-2#readme",
   "devDependencies": {
     "grunt": "^1.0.2",
+    "grunt-contrib-clean": "~0.6.0",
+    "grunt-contrib-copy": "~0.8.0",
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-nodeunit": "~0.4.1",
     "grunt-contrib-uglify": "~0.5.0",
-    "grunt-contrib-clean": "~0.6.0",
     "grunt-mkdir": "~0.1.2",
-    "grunt-contrib-copy": "~0.8.0"
+    "gulp-autoprefixer": "^5.0.0",
+    "gulp-sass": "^3.2.1"
   },
   "dependencies": {
-    "grunt-responsive-images": "^0.1.6"
+    "grunt-responsive-images": "^0.1.6",
+    "gulp": "^3.9.1"
   }
 }
