@@ -39,11 +39,17 @@
     Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
   </footer>
 
-	<!-- Register SW -->
-	<!-- <script type="text/javascript" src="js/register_sw.js"></script>
-	<script type="text/javascript" charset="utf-8" src="js/dbhelper.js"></script> -->
-  <script type="text/javascript" charset="utf-8" src="js/all.js"></script>
+  <!-- Register SW -->
+  <!-- <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script> -->
+  <!-- build:js js/combined.js -->
+  <script type="text/javascript" src="js/lib/dexie.js"></script>
+  <script type="text/javascript" src="js/register_sw.js"></script>
+  <script type="text/javascript" charset="utf-8" src="js/dbhelper.js"></script>
+  <!-- endbuild -->
   <script type="text/javascript" charset="utf-8" src="js/main.js"></script>
+  <script>
+    
+  </script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwpwfIHLzfd4Bi2R_PXRDrO5BgdUO0GTs&libraries=places&callback=initMap"></script>
 </body>
 

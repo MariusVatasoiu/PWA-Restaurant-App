@@ -1,0 +1,2 @@
+"use strict";var _dexie=require("dexie"),_dexie2=_interopRequireDefault(_dexie);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}console.log(Dixie);
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImlkYi10ZXN0L2luZGV4LmpzIl0sIm5hbWVzIjpbIl9kZXhpZSIsInJlcXVpcmUiLCJjb25zb2xlIiwibG9nIiwiRGl4aWUiXSwibWFwcGluZ3MiOiJhQUFBLElBQUFBLE9BQUFDLFFBQUEsd0hBQUFDLFFBQUFDLElBQUFDIiwiZmlsZSI6ImlkYi10ZXN0L2luZGV4LmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IERleGllIGZyb20gJ2RleGllJztcclxuXHJcbmNvbnNvbGUubG9nKERpeGllKTtcclxuIl19
