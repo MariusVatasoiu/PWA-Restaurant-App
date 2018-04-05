@@ -7,20 +7,22 @@ var uglify = require('gulp-uglify');
 var babel = require('gulp-babel');
 var sourcemaps = require('gulp-sourcemaps');
 
-var js = [
+var combineJS = [
   'js/register_sw.js',
-  'js/dbhelper.js',
+  'js/dbhelper.js'
+];
+var individualJS = [
   'js/main.js',
   'js/restaurant_info.js'
 ];
 
-gulp.task('default',['copy-html', 'copy-images', 'styles', 'scripts-dist'], function(){
+gulp.task('default',['copy-html', 'copy-images', 'styles', 'copy-scripts', 'scripts-dist'], function(){
   console.log('hello world');
 });
 
-gulp.task('watch', ['browserSync', 'styles', 'copy-html', 'scripts'], function(){
+gulp.task('watch', ['browserSync', 'styles', 'copy-html', 'copy-scripts', 'scripts'], function(){
   gulp.watch('sass/**/*.scss', ['styles']);
-  gulp.watch('/index.html', ['copy-html']);
+  gulp.watch('*.html', ['copy-html']);
   gulp.watch('*.html', browserSync.reload);
   gulp.watch('js/**/*.js', browserSync.reload);
 });
@@ -33,7 +35,7 @@ gulp.task('dist', [
 ]);
 
 gulp.task('scripts', function(){
-  gulp.src(js)
+  gulp.src(combineJS)
       .pipe(babel({
         presets: ['env']
       }))
@@ -42,7 +44,7 @@ gulp.task('scripts', function(){
 });
 
 gulp.task('scripts-dist', function(){
-  gulp.src(js)
+  gulp.src(combineJS)
       .pipe(sourcemaps.init())
       .pipe(babel({
         presets: ['env']
@@ -51,6 +53,14 @@ gulp.task('scripts-dist', function(){
       .pipe(uglify().on('error', e => console.log(e)))
       .pipe(sourcemaps.write())
       .pipe(gulp.dest('dist/js'));
+});
+
+gulp.task('copy-scripts', function(){
+  gulp.src(individualJS)
+      .pipe(babel({
+        presets: ['env']
+      }))
+      .pipe(gulp.dest('dist/js'))
 });
 
 gulp.task('copy-html', function(){
