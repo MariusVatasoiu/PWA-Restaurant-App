@@ -15,6 +15,8 @@ var combineJS = [
 ];
 var individualJS = [
   'js/indb-test/index.js',
+  'js/lib/lazyload.es2015.js',
+  'js/lib/lazyload.min.js',
   'js/main.js',
   'js/restaurant_info.js'
 ];
@@ -41,9 +43,9 @@ gulp.task('dist', [
 
 gulp.task('scripts', function(){
   gulp.src('js/**/*.js')
-      .pipe(babel({
-        presets: ['env']
-      }))
+      // .pipe(babel({
+      //   presets: ['env']
+      // }))
       //.pipe(concat('all.js'))
       .pipe(gulp.dest('dist/js'));
 });

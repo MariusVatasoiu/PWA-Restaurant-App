@@ -1,18 +1,18 @@
 self.importScripts("js/lib/dexie.js");
+
+// config Dexie() for IndexedDB
 var db = new Dexie("restaurants");
-console.log('DB:', db);
 db.version(1).stores({
   urls: 'url,data'
 });
 db.open();
-//console.log(dexie);
 
+// config for cache
 var cacheWhitelist = ['cache-and-update-v1'];
 var CACHE = cacheWhitelist[0];
 
 self.addEventListener('install', function(evt) {
-	console.log('The service worker is being installed.');
-	
+	console.log('The service worker is being installed.');	
 	evt.waitUntil(precache());
 });
 
@@ -20,7 +20,6 @@ self.addEventListener('activate', function(event) {
   console.log('Activating new service worker...', event);
 
   event.waitUntil(
-    //createDB()
     caches.keys().then(function(cacheNames) {
       return Promise.all(
         cacheNames.map(function(cacheName) {
@@ -102,35 +101,12 @@ function updateCache(request) {
 function updateDB(request){
   return fetch(request).then(function (response) {
     console.log(response);
-    // let resp = response.clone();
     // console.log(resp);
     return response.json();
   }).then( response => {
     console.log('updateDB:', response);
     return db.urls.put({url: request.url, data: response});
   });
-
-  //
-  // Put some data into it
-  //
-  // db.urls.put({url: "/test", data: {'test': 'test'}}).then (function(){
-  //   //
-  //   // Then when data is stored, read from it
-  //   //
-  //   return db.urls.get('/test');
-  // }).then(function (url) {
-  //   //
-  //   // Display the result
-  //   //
-  //   console.log ("Nicolas has shoe size " + url.data.test);
-  // }).catch(function(error) {
-  //   //
-  //   // Finally don't forget to catch any error
-  //   // that could have happened anywhere in the
-  //   // code blocks above.
-  //   //
-  //   console.log ("Ooops: " + error);
-  // });
 }
 
 function fromDB(request){
@@ -138,17 +114,15 @@ function fromDB(request){
 
   console.log('FROM DB:', request);
   //return db.urls.get('/test1') || fetch(request);
-  return  db.urls.get(request.url).then(function (matching) { console.log('MATCHING:', matching);
+  return  db.urls.get(request.url).then(function (matching) {
 
-    if(matching){
-      let response = new Response(JSON.stringify(matching.data));
-      console.log('MATCHING DATA:', matching.data);
+    return (matching) ? new Response(JSON.stringify(matching.data)) : fetch(request);
 
-      //let newRequest = new Request(request.url, {body: JSON.stringify(matching.data)});
+    // if(matching){
 
-      console.log('NEW RESPONSE:', newRequest);
-      return response; //Promise.reject('no-match'); 
-    }
-    return fetch(request); //Promise.reject('no-match'); 
+    //   //console.log('NEW RESPONSE:', response);
+    //   return new Response(JSON.stringify(matching.data)); 
+    // }
+    // return fetch(request); //Promise.reject('no-match'); 
   });
 }

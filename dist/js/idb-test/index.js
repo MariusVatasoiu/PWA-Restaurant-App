@@ -1,2 +1,26 @@
-"use strict";var _dexie=require("dexie"),_dexie2=_interopRequireDefault(_dexie);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}console.log(Dixie);
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImlkYi10ZXN0L2luZGV4LmpzIl0sIm5hbWVzIjpbIl9kZXhpZSIsInJlcXVpcmUiLCJjb25zb2xlIiwibG9nIiwiRGl4aWUiXSwibWFwcGluZ3MiOiJhQUFBLElBQUFBLE9BQUFDLFFBQUEsd0hBQUFDLFFBQUFDLElBQUFDIiwiZmlsZSI6ImlkYi10ZXN0L2luZGV4LmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IERleGllIGZyb20gJ2RleGllJztcclxuXHJcbmNvbnNvbGUubG9nKERpeGllKTtcclxuIl19
+var db = new Dexie("friend_database");
+db.version(1).stores({
+    friends: 'name,shoeSize'
+});
+//
+// Put some data into it
+//
+db.friends.put({name: "Nicolas", shoeSize: 8}).then (function(){
+  //
+  // Then when data is stored, read from it
+  //
+  return db.friends.get('Nicolas');
+}).then(function (friend) {
+  //
+  // Display the result
+  //
+  alert ("Nicolas has shoe size " + friend.shoeSize);
+}).catch(function(error) {
+  //
+  // Finally don't forget to catch any error
+  // that could have happened anywhere in the
+  // code blocks above.
+  //
+  alert ("Ooops: " + error);
+});
+console.log(db);

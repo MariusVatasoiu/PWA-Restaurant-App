@@ -4,12 +4,14 @@ let restaurants,
 var map;
 var markers = [];
 
+var myLazyLoad = new LazyLoad();
+
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
 document.addEventListener('DOMContentLoaded', (event) => {
   fetchNeighborhoods();
-	fetchCuisines();
+  fetchCuisines();
 });
 
 /**
@@ -130,6 +132,8 @@ const fillRestaurantsHTML = (restaurants = self.restaurants) => {
     ul.append(createRestaurantHTML(restaurant));
   });
   addMarkersToMap();
+
+  myLazyLoad.update();
 }
 
 /**
@@ -146,13 +150,14 @@ const createRestaurantHTML = (restaurant) => {
 
 	/* Thumbnail */
   const image = document.createElement('img');
-	image.className = 'restaurant-img';
-	image.alt = `${restaurant.name} restaurant's photo`;
-	image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  let imageSrc = DBHelper.imageUrlForRestaurant(restaurant);
+  image.className = 'restaurant-img';
+  image.alt = `${restaurant.name} restaurant's photo`;
+	image.setAttribute('data-src', imageSrc); //old 'src'
 	
 	// Set srcset for responsive
-	const image480 = image.src.replace(/(\.[\w\d_-]+)$/i, '-480$1')
-	image.setAttribute('srcset', `${image480} 480w, ${image.src} 800w`);
+	const image480 = imageSrc.replace(/(\.[\w\d_-]+)$/i, '-480$1')
+	image.setAttribute('data-srcset', `${image480} 480w, ${imageSrc} 800w`); //old 'srcset'
 	image.setAttribute('sizes', '(max-width: 576px) 480px, (max-width: 1200px) 480px');
 
 	articleThumb.append(image);
