@@ -71,7 +71,7 @@ gulp.task('sw', function(){
 });
 
 gulp.task('copy-html', function(){
-  gulp.src(['./*.html'])
+  gulp.src(['./*.html', 'manifest.json'])
       .pipe(useref())
       .pipe(gulp.dest('./dist'))
 });
