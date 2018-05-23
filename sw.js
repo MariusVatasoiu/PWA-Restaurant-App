@@ -1,10 +1,14 @@
 self.importScripts("js/lib/dexie.js");
+var db = new Dexie("restaurants");
+console.log('DB:', db);
+db.version(1).stores({
+  urls: 'url,data'
+});
+db.open();
 //console.log(dexie);
 
 var cacheWhitelist = ['cache-and-update-v1'];
 var CACHE = cacheWhitelist[0];
-
-console.log('Dexie:', new Dexie());
 
 self.addEventListener('install', function(evt) {
 	console.log('The service worker is being installed.');
@@ -13,30 +17,41 @@ self.addEventListener('install', function(evt) {
 });
 
 self.addEventListener('activate', function(event) {
-  console.log('Activating new service worker...');
+  console.log('Activating new service worker...', event);
 
   event.waitUntil(
-    createDB()
-    // caches.keys().then(function(cacheNames) {
-    //   return Promise.all(
-    //     cacheNames.map(function(cacheName) {
-    //       if (cacheWhitelist.indexOf(cacheName) === -1) {
-    //         return caches.delete(cacheName);
-    //       }
-    //     })
-    //   ).then(() => { console.log('AAAAAAAAAAA'); });
-    // })
+    //createDB()
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(
+        cacheNames.map(function(cacheName) {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            return caches.delete(cacheName);
+          }
+        })
+      ).then(() => { console.log('AAAAAAAAAAA'); });
+    })
   );
 });
 
-self.addEventListener('fetch', function(evt) {
-	console.log('The service worker is serving the asset.');
-	
-	evt.respondWith(fromCache(evt.request).catch((error) => {
-    console.log(error);
-  }));
-
-	evt.waitUntil(update(evt.request));
+self.addEventListener('fetch', event => {
+	//console.log('The service worker is serving the asset.', event.request);
+  
+  if(event.request.method != 'GET') return;
+  
+  // check if the request is for JSON
+  if(event.request.url.includes(':1337')){
+    console.log('SERVE FROM INDEXEDDB');
+    event.respondWith(fromDB(event.request).catch((error) => {
+      console.log(error);
+    }));
+    event.waitUntil(updateDB(event.request));
+  }else{
+    event.respondWith(fromCache(event.request).catch((error) => {
+      console.log(error);
+    }));
+  
+    event.waitUntil(updateCache(event.request));
+  }
 });
 
 function precache() {
@@ -45,7 +60,7 @@ function precache() {
 			'./',
 			'./index.html',
 			'./restaurant.html',
-			'./data/restaurants.json',
+			//'./data/restaurants.json',
 			'./css/styles.css',
 			'./css/responsive.css',
 			'./js/main.js',
@@ -74,7 +89,7 @@ function fromCache(request) {
   });
 }
 
-function update(request) {
+function updateCache(request) {
   return caches.open(CACHE).then(function (cache) {
     return fetch(request).then(function (response) {
       return cache.put(request, response);
@@ -82,33 +97,58 @@ function update(request) {
   });
 }
 
-function createDB(){
-  var db = new Dexie("restaurants");
-  console.log('DB:', db);
 
-  db.version(1).stores({
-    friends: 'name,shoeSize'
+// functions for IndexedDB
+function updateDB(request){
+  return fetch(request).then(function (response) {
+    console.log(response);
+    // let resp = response.clone();
+    // console.log(resp);
+    return response.json();
+  }).then( response => {
+    console.log('updateDB:', response);
+    return db.urls.put({url: request.url, data: response});
   });
 
   //
   // Put some data into it
   //
-  db.friends.put({name: "Nicolas", shoeSize: 8}).then (function(){
-    //
-    // Then when data is stored, read from it
-    //
-    return db.friends.get('Nicolas');
-  }).then(function (friend) {
-    //
-    // Display the result
-    //
-    alert ("Nicolas has shoe size " + friend.shoeSize);
-  }).catch(function(error) {
-    //
-    // Finally don't forget to catch any error
-    // that could have happened anywhere in the
-    // code blocks above.
-    //
-    alert ("Ooops: " + error);
+  // db.urls.put({url: "/test", data: {'test': 'test'}}).then (function(){
+  //   //
+  //   // Then when data is stored, read from it
+  //   //
+  //   return db.urls.get('/test');
+  // }).then(function (url) {
+  //   //
+  //   // Display the result
+  //   //
+  //   console.log ("Nicolas has shoe size " + url.data.test);
+  // }).catch(function(error) {
+  //   //
+  //   // Finally don't forget to catch any error
+  //   // that could have happened anywhere in the
+  //   // code blocks above.
+  //   //
+  //   console.log ("Ooops: " + error);
+  // });
+}
+
+function fromDB(request){
+  // var db = new Dexie("restaurants");
+
+  console.log('FROM DB:', request);
+  //return db.urls.get('/test1') || fetch(request);
+  return  db.urls.get(request.url).then(function (matching) { console.log('MATCHING:', matching);
+
+    if(matching){
+      let response = new Response(JSON.stringify(matching.data));
+      console.log('MATCHING DATA:', matching.data);
+
+      //let newRequest = new Request(request.url, {body: JSON.stringify(matching.data)});
+
+      console.log('NEW RESPONSE:', newRequest);
+      return response; //Promise.reject('no-match'); 
+    }
+    return fetch(request); //Promise.reject('no-match'); 
   });
 }
