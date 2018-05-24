@@ -75,6 +75,10 @@ gulp.task('sw', function(){
 gulp.task('copy-html', function(){
   gulp.src(['./*.html', 'manifest.json'])
       .pipe(useref())
+      .pipe(gulpif('*.js', babel({ // added later
+        presets: ['env']
+      })))
+      .pipe(gulpif('*.js', uglify())) //minify js - added later
       .pipe(gulp.dest('./dist'))
 });
 
