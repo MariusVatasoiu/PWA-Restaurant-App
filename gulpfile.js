@@ -9,6 +9,8 @@ var sourcemaps = require('gulp-sourcemaps');
 var useref = require('gulp-useref');
 var gulpif = require('gulp-if');
 
+const fs = require('fs');
+
 var combineJS = [
   'js/register_sw.js',
   'js/dbhelper.js'
@@ -98,6 +100,16 @@ gulp.task('browserSync', function(){
     port: 8000,
     server: {
       baseDir: "./dist"
-    }
+    },
+    // https: {
+    //   key: fs.readFileSync("ssl/filename.key", "utf8"),
+    //   cert: fs.readFileSync("ssl/filename.crt", "utf8")
+    //   //passphrase: 'password'
+    // },
+    // https: {
+    //   key: "ssl/2/server.key",
+    //   cert: "ssl/2/server.crt"
+    //   //passphrase: 'password'
+    // }
   });
 });
