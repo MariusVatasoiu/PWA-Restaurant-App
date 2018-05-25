@@ -3,7 +3,6 @@ let restaurants,
   cuisines;
 var map;
 var markers = [];
-
 var myLazyLoad = new LazyLoad();
 
 /**
@@ -12,17 +11,6 @@ var myLazyLoad = new LazyLoad();
 document.addEventListener('DOMContentLoaded', (event) => {
   fetchNeighborhoods();
   fetchCuisines();
-  
-  //lazyloadGoogleMap();
-
-  // if (window.google && google.maps) {
-  //   // Map script is already loaded
-  //   console.log("Map script is already loaded. Initialising");
-  //   initMap();
-  // } else {
-  //   console.log("Lazy loading Google map...");
-  //   lazyLoadGoogleMap();            
-  // }
 });
 
 /**
@@ -94,31 +82,6 @@ window.initMap = () => {
     scrollwheel: false
   });
   updateRestaurants();
-}
-
-
-const lazyloadGoogleMap = () => {
-  var options = {
-    rootMargin: '100px',
-    threshold: 0
-  };
-
-  var map = document.getElementById('map');
-
-  var observer = new IntersectionObserver(
-    function(entries, self) {
-      // Intersecting with Edge workaround https://calendar.perfplanet.com/2017/progressive-image-loading-using-intersection-observer-and-sqip/#comment-102838
-      var isIntersecting = typeof entries[0].isIntersecting === 'boolean' ? entries[0].isIntersecting : entries[0].intersectionRatio > 0;
-      if (isIntersecting) {
-        loadJS('https://maps.googleapis.com/maps/api/js?key=AIzaSyBwpwfIHLzfd4Bi2R_PXRDrO5BgdUO0GTs&libraries=places&callback=initMap');
-        self.unobserve(map);
-      }
-    },
-    options
-  );
-
-  observer.observe(map);
-
 }
 
 /**
