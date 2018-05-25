@@ -22,12 +22,12 @@ var individualJS = [
   'js/restaurant_info.js'
 ];
 
-gulp.task('default',['copy-html', 'copy-images', 'styles', 'sw'], function(){
-  console.log('hello world');
+gulp.task('default',['copy-html', 'copy-images', 'sw'], function(){
+  console.log('Done!');
 });
 
 gulp.task('run',['default', 'browserSync'], function(){
-  console.log('run the app');
+  console.log('Starting the app');
 });
 
 //gulp.task('watch', ['browserSync', 'styles', 'copy-html', 'sw', 'scripts'], function(){
@@ -68,19 +68,19 @@ gulp.task('scripts', function(){
 
 gulp.task('sw', function(){
   gulp.src('./sw.js')
-      .pipe(babel({
-        presets: ['env']
-      }))
+      // .pipe(babel({
+      //   presets: ['env']
+      // }))
       .pipe(gulp.dest('./dist'))
 });
 
-gulp.task('copy-html', ['scripts'], function(){
+gulp.task('copy-html', ['scripts', 'styles'], function(){
   gulp.src(['./*.html', 'manifest.json'])
       .pipe(useref())
-      .pipe(gulpif('*.js', babel({ // added later
-        presets: ['env']
-      })))
-      .pipe(gulpif('*.js', uglify())) //minify js - added later
+      // .pipe(gulpif('*.js', babel({ // added later
+      //   presets: ['env']
+      // })))
+      // .pipe(gulpif('*.js', uglify())) //minify js - added later
       .pipe(gulp.dest('./dist'))
 });
 
@@ -95,10 +95,12 @@ gulp.task('styles', function(){
       .pipe(autoprefixer({
         browsers: ['last 2 versions']
       }))
+      .pipe(concat('combined.css'))
       .pipe(gulp.dest('./dist/css'))
-      .pipe(browserSync.reload({
-        stream: true
-      }));
+      // .pipe(browserSync.reload({
+      //   stream: true
+      // }))
+      ;
 });
 
 gulp.task('browserSync', function(){

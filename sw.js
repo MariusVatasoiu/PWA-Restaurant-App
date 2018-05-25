@@ -58,12 +58,14 @@ function precache() {
 			'./',
 			'./index.html',
 			'./restaurant.html',
-			'./css/styles.css',
-			'./css/responsive.css',
+			//'./css/styles.css',
+      //'./css/responsive.css',
+      './css/combined.css',
 			'./js/main.js',
 			'./js/restaurant_info.js',
 			'./js/dbhelper.js',
-			'./js/register_sw.js',
+      './js/register_sw.js',
+      './js/combined.js',
 			'./img/1.jpg', './img/1-480.jpg',
 			'./img/2.jpg', './img/2-480.jpg',
 			'./img/3.jpg', './img/3-480.jpg',
@@ -103,6 +105,8 @@ function updateDB(request){
   }).then( response => {
     //console.log('updateDB:', response);
     return db.urls.put({url: request.url, data: response});
+  }).catch(error => {
+    console.log(error);
   });
 }
 
