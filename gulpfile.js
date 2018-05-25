@@ -8,6 +8,7 @@ var babel = require('gulp-babel');
 var sourcemaps = require('gulp-sourcemaps');
 var useref = require('gulp-useref');
 var gulpif = require('gulp-if');
+var compress = require('compression');
 
 const fs = require('fs');
 
@@ -83,7 +84,7 @@ gulp.task('copy-html', function(){
 });
 
 gulp.task('copy-images', function(){
-  gulp.src('img/*')
+  gulp.src('img/**/*')
       .pipe(gulp.dest('dist/img'));
 });
 
@@ -105,6 +106,7 @@ gulp.task('browserSync', function(){
     server: {
       baseDir: "./dist"
     },
+    middleware: [compress()]
     // https: {
     //   key: fs.readFileSync("ssl/filename.key", "utf8"),
     //   cert: fs.readFileSync("ssl/filename.crt", "utf8")

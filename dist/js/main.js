@@ -153,12 +153,12 @@ const createRestaurantHTML = (restaurant) => {
   let imageSrc = DBHelper.imageUrlForRestaurant(restaurant);
   image.className = 'restaurant-img';
   image.alt = `${restaurant.name} restaurant's photo`;
-	image.setAttribute('data-src', imageSrc); //old 'src'
 	
 	// Set srcset for responsive
-	const image480 = imageSrc.replace(/(\.[\w\d_-]+)$/i, '-480$1')
-	image.setAttribute('data-srcset', `${image480} 480w, ${imageSrc} 800w`); //old 'srcset'
-	image.setAttribute('sizes', '(max-width: 576px) 480px, (max-width: 1200px) 480px');
+  const imageSrc480 = imageSrc.replace(/(\.[\w\d_-]+)$/i, '-480$1');
+  image.setAttribute('data-src', imageSrc); //old 'src'
+	image.setAttribute('data-srcset', `${imageSrc480} 480w, ${imageSrc480} 800w, ${imageSrc} 1600w`); //old 'srcset'
+	image.setAttribute('sizes', '(max-width: 576px) 480px, (max-width: 1600px) 480px');
 
 	articleThumb.append(image);
 	article.append(articleThumb);

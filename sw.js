@@ -2,9 +2,7 @@ self.importScripts("js/lib/dexie.js");
 
 // config Dexie() for IndexedDB
 var db = new Dexie("restaurants");
-db.version(1).stores({
-  urls: 'url,data'
-});
+
 db.open();
 
 // config for cache
@@ -18,7 +16,10 @@ self.addEventListener('install', function(evt) {
 
 self.addEventListener('activate', function(event) {
   console.log('Activating new service worker...', event);
-
+  db.version(1).stores({
+    urls: 'url,data'
+  });
+  
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
       return Promise.all(

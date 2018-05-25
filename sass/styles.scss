@@ -136,7 +136,7 @@ nav h1 a {
   align-items: center;
 }
 .filter-options h2 {
-  color: white;
+  color: #000; /* white; */
   font-size: 1rem;
   font-weight: normal;
   line-height: 1;
@@ -181,7 +181,7 @@ nav h1 a {
   min-width: 100%; */
 }
 #restaurants-list article h2 {
-  color: #f18200;
+  color: #000; /* #f18200; */
   font-family: Arial,sans-serif;
   font-size: 14pt;
   font-weight: 200;
@@ -197,7 +197,7 @@ nav h1 a {
 #restaurants-list article a {
   background-color: orange;
   border-bottom: 3px solid #eee;
-  color: #fff;
+  color: #000; /* #fff; */
   display: inline-block;
   font-size: 10pt;
   margin: 15px 0 0;
