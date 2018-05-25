@@ -10,8 +10,6 @@ var useref = require('gulp-useref');
 var gulpif = require('gulp-if');
 var compress = require('compression');
 
-const fs = require('fs');
-
 var combineJS = [
   'js/register_sw.js',
   'js/dbhelper.js'
@@ -53,17 +51,17 @@ gulp.task('scripts', function(){
       .pipe(gulp.dest('dist/js'));
 });
 
-gulp.task('scripts-dist', function(){
-  gulp.src('js/**/*.js')
-      .pipe(sourcemaps.init())
-      .pipe(babel({
-        presets: ['env']
-      }))
-      //.pipe(concat('all.js'))
-      .pipe(uglify().on('error', e => console.log(e)))
-      .pipe(sourcemaps.write())
-      .pipe(gulp.dest('dist/js'));
-});
+// gulp.task('scripts-dist', function(){
+//   gulp.src('js/**/*.js')
+//       .pipe(sourcemaps.init())
+//       .pipe(babel({
+//         presets: ['env']
+//       }))
+//       //.pipe(concat('all.js'))
+//       .pipe(uglify().on('error', e => console.log(e)))
+//       .pipe(sourcemaps.write())
+//       .pipe(gulp.dest('dist/js'));
+// });
 
 gulp.task('sw', function(){
   gulp.src('./sw.js')
@@ -73,7 +71,7 @@ gulp.task('sw', function(){
       .pipe(gulp.dest('./dist'))
 });
 
-gulp.task('copy-html', function(){
+gulp.task('copy-html', ['scripts'], function(){
   gulp.src(['./*.html', 'manifest.json'])
       .pipe(useref())
       .pipe(gulpif('*.js', babel({ // added later

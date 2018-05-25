@@ -2,7 +2,9 @@ self.importScripts("js/lib/dexie.js");
 
 // config Dexie() for IndexedDB
 var db = new Dexie("restaurants");
-
+db.version(1).stores({
+  urls: 'url,data'
+});
 db.open();
 
 // config for cache
@@ -16,10 +18,7 @@ self.addEventListener('install', function(evt) {
 
 self.addEventListener('activate', function(event) {
   console.log('Activating new service worker...', event);
-  db.version(1).stores({
-    urls: 'url,data'
-  });
-  
+
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
       return Promise.all(
@@ -40,7 +39,6 @@ self.addEventListener('fetch', event => {
   
   // check if the request is for JSON
   if(event.request.url.includes(':1337')){
-    console.log('SERVE FROM INDEXEDDB');
     event.respondWith(fromDB(event.request).catch((error) => {
       console.log(error);
     }));
@@ -60,7 +58,6 @@ function precache() {
 			'./',
 			'./index.html',
 			'./restaurant.html',
-			//'./data/restaurants.json',
 			'./css/styles.css',
 			'./css/responsive.css',
 			'./js/main.js',
@@ -101,29 +98,16 @@ function updateCache(request) {
 // functions for IndexedDB
 function updateDB(request){
   return fetch(request).then(function (response) {
-    console.log(response);
-    // console.log(resp);
+    //console.log(response);
     return response.json();
   }).then( response => {
-    console.log('updateDB:', response);
+    //console.log('updateDB:', response);
     return db.urls.put({url: request.url, data: response});
   });
 }
 
 function fromDB(request){
-  // var db = new Dexie("restaurants");
-
-  console.log('FROM DB:', request);
-  //return db.urls.get('/test1') || fetch(request);
   return  db.urls.get(request.url).then(function (matching) {
-
     return (matching) ? new Response(JSON.stringify(matching.data)) : fetch(request);
-
-    // if(matching){
-
-    //   //console.log('NEW RESPONSE:', response);
-    //   return new Response(JSON.stringify(matching.data)); 
-    // }
-    // return fetch(request); //Promise.reject('no-match'); 
   });
 }
