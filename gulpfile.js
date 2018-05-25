@@ -22,9 +22,12 @@ var individualJS = [
   'js/restaurant_info.js'
 ];
 
-//gulp.task('default',['copy-html', 'copy-images', 'styles', 'sw', 'scripts-dist'], function(){
 gulp.task('default',['copy-html', 'copy-images', 'styles', 'sw'], function(){
   console.log('hello world');
+});
+
+gulp.task('run',['default', 'browserSync'], function(){
+  console.log('run the app');
 });
 
 //gulp.task('watch', ['browserSync', 'styles', 'copy-html', 'sw', 'scripts'], function(){
