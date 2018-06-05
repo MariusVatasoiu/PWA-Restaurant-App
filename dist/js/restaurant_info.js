@@ -5,11 +5,12 @@ var map;
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
-  fetchRestaurantFromURL((error, restaurant) => {
-    if (error) { // Got an error!
-      //console.error(error);
-      console.log(error);
-    } else {
+  //fetchRestaurantFromURL((error, restaurant) => {
+  fetchRestaurantFromURL().then(restaurant => {
+    //if (error) { // Got an error!
+    //  //console.error(error);
+    //  console.log(error);
+    //} else {
       self.map = new google.maps.Map(document.getElementById('map'), {
         zoom: 16,
         center: restaurant.latlng,
@@ -17,31 +18,46 @@ window.initMap = () => {
       });
       fillBreadcrumb();
       DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
-    }
-  });
+    //}
+  }).catch(error => console.error(error));
 }
 
 /**
  * Get current restaurant from page URL.
  */
-const fetchRestaurantFromURL = (callback) => {
+const fetchRestaurantFromURL = () => {
   if (self.restaurant) { // restaurant already fetched!
-    callback(null, self.restaurant)
-    return;
+    // callback(null, self.restaurant)
+    // return;
+    return Promise.resolve(self.restaurant);
   }
   const id = getParameterByName('id');
   if (!id) { // no id found in URL
     let error = 'No restaurant id in URL'
-    callback(error, null);
+    // callback(error, null);
+    return Promise.reject(new Error(error));
   } else {
-    DBHelper.fetchRestaurantById(id, (error, restaurant) => {
+    // DBHelper.fetchRestaurantById(id, (error, restaurant) => {
+    //   self.restaurant = restaurant;
+    //   if (!restaurant) {
+    //     console.error(error);
+    //     return;
+    //   }
+    //   fillRestaurantHTML();
+    //   callback(null, restaurant)
+    // });
+    return DBHelper.fetchRestaurantById(id)
+    .then(restaurant => {
       self.restaurant = restaurant;
-      if (!restaurant) {
-        console.error(error);
-        return;
-      }
+      return DBHelper.fetchReviewsById(id);
+    })
+    .then(reviews => {
+      self.restaurant.reviews = reviews;
       fillRestaurantHTML();
-      callback(null, restaurant)
+      return Promise.resolve(self.restaurant);
+    })
+    .catch(error => {
+      console.error(error);
     });
   }
 }
@@ -132,7 +148,12 @@ const createReviewHTML = (review) => {
 	reviewTitle.appendChild(name);
 
   const date = document.createElement('p');
-  date.innerHTML = review.date;
+  const reviewDate = new Date(review.updatedAt);
+  const reviewDay = String(reviewDate.getDay()+1).padStart(2, '0');
+  const reviewMonth = String(reviewDate.getMonth()+1).padStart(2, '0');
+  const reviewYear = reviewDate.getFullYear();
+
+  date.innerHTML = `${reviewDay}.${reviewMonth}.${reviewYear}`;
 	date.className = 'col text-right';
 	reviewTitle.appendChild(date);
 
