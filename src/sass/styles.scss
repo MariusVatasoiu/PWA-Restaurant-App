@@ -1,4 +1,6 @@
 @charset "utf-8";
+$primary-color: #b76700;
+
 /* CSS Document */
 *, ::after, ::before {
 	box-sizing: border-box;
@@ -316,6 +318,12 @@ nav h1 a {
 .text-right{
 	text-align: right;
 }
+.padding-left-30{
+  padding-left: 30px;
+}
+.padding-right-30{
+  padding-right: 30px;
+}
 .badge{
 	display: inline-block;
 	background-color: #095201; /* orange; */
@@ -324,6 +332,51 @@ nav h1 a {
 	text-transform: uppercase;
 	color: #FFF;
 	font-weight: bold;
+}
+
+/* Forms */
+fieldset{
+  background-color: #FFF;
+  padding: 20px;
+  margin: 0px;
+  display: block;
+  position: relative;
+  border: none;
+  border-top-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  -webkit-box-shadow: 4px 4px 12px #ccc;
+  box-shadow: 4px 4px 12px #ccc;
+}
+.form .legend{
+  margin-bottom: 10px;
+  font-weight: 400;
+  font-size: 1.4rem;
+}
+.form label{
+  display: block;
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.form input, 
+.form textarea,
+.form select{
+  width: 100%;
+  padding: 6px;
+  border-radius: 3px;
+  border: 1px solid #CCC;
+  margin-bottom: 10px;
+}
+.btn{
+  background-color: $primary-color;
+  padding: 6px 12px;
+  cursor: pointer;
+  color: #FFF;
+  border: 1px solid red;
+  border-radius: 3px;
+  &:hover{
+    background-color: #000;
+  }
 }
 
 
