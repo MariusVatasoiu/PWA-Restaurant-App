@@ -22,6 +22,92 @@ window.initMap = () => {
   }).catch(error => console.error(error));
 }
 
+const sendReview = (event) => {
+  //console.log('Send Review', event);
+  const reviewName = document.querySelector('#review-name');
+  const reviewRating = document.querySelector('#review-rating');
+  const reviewComment = document.querySelector('#review-comment');
+
+  const reviewNameVal = reviewName.value;
+  const reviewRatingVal = Number(reviewRating.value);
+  const reviewCommentVal = reviewComment.value;
+
+  const id = Number(getParameterByName('id'));
+
+  // validation
+  if(!validateForm()) return;
+
+  let data = {
+    "restaurant_id": id,
+    "name": reviewNameVal,
+    "rating": reviewRatingVal,
+    "comments": reviewCommentVal
+  };
+
+  fetch(DBHelper.API_REVIEWS_URL, {
+    body: JSON.stringify(data),
+    method: 'POST'
+  })
+  .then(response => response.json())
+  .then(response => {
+    document.getElementById('reviews-list').appendChild(createReviewHTML(response));
+    // clear form
+    reviewName.value = '';
+    reviewRating.value = -1;
+    reviewComment.value = '';
+  });
+}
+
+document.getElementById('send-review').addEventListener('click', sendReview);
+
+/**
+ * Add event 'change' on every input from form.
+ */
+const formControls = document.querySelectorAll('.form-control');
+Array.from(formControls).forEach(input => {
+  input.addEventListener('change', (event) => {
+    let elem = event.path[0]; 
+    validateElement(elem);
+  });
+});
+
+/**
+ * Validate element.
+ */
+const validateElement = (elem) => {
+  // clear error
+  elem.classList.remove('error');
+  const type = elem.getAttribute('data-validation');
+  switch(type){
+    case 'string':
+      if(elem.value.length < 3){
+        elem.classList.add('error');
+        return false;
+      }
+      break;
+    case 'number':
+      if(elem.value < 0){
+        elem.classList.add('error');
+        return false;
+      }
+      break;
+  }
+  return true;
+}
+
+/**
+ * Validate form.
+ */
+const validateForm = () => {
+  const formControls = document.querySelectorAll('.form-control');
+  for(elem of Array.from(formControls)){
+    if(!validateElement(elem)){
+      return false;
+    }
+  }
+  return true;
+}
+
 /**
  * Get current restaurant from page URL.
  */

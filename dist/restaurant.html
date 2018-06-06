@@ -52,35 +52,34 @@
         <section id="reviews-content">
           <ul id="reviews-list"></ul>
         </section>
-        <section id="reviews-form">
-            <div class="form" role="form" aria-labelledby="review-legend">
-              <fieldset>
-                <h4 class="legend" id="review-legend">Add your review</h4>
-                <div class="flex-container">
-                  <div class="col-xs-12 col-6">
-                    <label for="review-name">Name</label>
-                    <input type="text" id="review-name" name="review_name" placeholder="Your Name" />
-                  </div><!-- /col-xs-12 -->
+        <section id="reviews-form" class="form" role="form" aria-labelledby="review-legend">
+            <fieldset>
+              <h4 class="legend" id="review-legend">Add your review</h4>
+              <div class="flex-container">
+                <div class="col-xs-12 col-6">
+                  <label for="review-name">Name</label>
+                  <input type="text" id="review-name" class="form-control" data-validation="string" placeholder="Your Name" />
+                </div><!-- /col-xs-12 -->
 
-                  <div class="col-xs-12 col-6 padding-left-30">
-                    <label for="review-rating">Rating</label>
-                    <select id="review-rating">
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>                
-                    </select>
-                  </div><!-- /col-xs-12 -->
-                </div><!-- /flex-container -->
+                <div class="col-xs-12 col-6 padding-left-30">
+                  <label for="review-rating">Rating</label>
+                  <select id="review-rating" class="form-control" data-validation="number">
+                    <option value="-1">- Rating -</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>                
+                  </select>
+                </div><!-- /col-xs-12 -->
+              </div><!-- /flex-container -->
 
-                <div class="col-xs-12">
-                  <label for="review-comment">Your Comment</label>
-                  <textarea id="review-comment" placeholder="Insert your comment here..."></textarea>
-                </div>
-                <button class="btn btn-primary" id="send-review">Add review</button>
-              </fieldset>
-            </div>
+              <div class="col-xs-12">
+                <label for="review-comment">Your Comment</label>
+                <textarea id="review-comment" class="form-control" data-validation="string" placeholder="Insert your comment here..."></textarea>
+              </div>
+              <button class="btn btn-primary" id="send-review">Add review</button>
+            </fieldset>
           </section><!-- End review-form-->
 			</section>
 			<!-- End reviews -->
