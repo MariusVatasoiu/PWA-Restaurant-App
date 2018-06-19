@@ -59,8 +59,28 @@ self.addEventListener('fetch', event => {
         // offline
         // add data to IndexedDB
         console.log('OFFLINE:', event);
+        event.respondWith(//() => {
+          //return serialize(event.request).then(serialized => {
+            new Response(
+              JSON.stringify([{
+                text: 'You are offline and I know it well.',
+                author: 'The Service Worker Cookbook',
+                id: 1,
+                isSticky: true
+              }]), 
+              {
+                status: 202,
+                headers: { 'Content-Type': 'application/json' }
+              }
+            )   
+            //console.log('fakeResponse:', fakeResponse);
+            
+            //return fakeResponse.clone();
+
+          //}).catch(error => {console.log(error)});
+        );
         
-        // event.respondWith(addReviewDB(event.request));
+        event.waitUntil(addReviewDB(event.request));
       }else{
         // online
         // check if there are data in pending in IndexedDB
@@ -140,9 +160,9 @@ function fromDB(request){
 
 // add review to IndexedDB
 function addReviewDB(request){
-  // serialize(request).then(serialized => {
-  // 
-  // });
+  return serialize(request).then(serialized => {
+    return db.reviews_pending.put({url: serialized.url, data: serialized});
+  });
 }
 
 // send all offline reviews to server

@@ -55,6 +55,8 @@ const sendReview = (event) => {
     reviewName.value = '';
     reviewRating.value = -1;
     reviewComment.value = '';
+  }).catch(error => {
+    console.log(error);
   });
 }
 
