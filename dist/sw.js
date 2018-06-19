@@ -3,7 +3,8 @@ self.importScripts("js/lib/dexie.js");
 // config Dexie() for IndexedDB
 var db = new Dexie("restaurants");
 db.version(1).stores({
-  urls: 'url,data'
+  urls: 'url,data',
+  reviews_pending: 'url,data'
 });
 db.open();
 
@@ -35,21 +36,42 @@ self.addEventListener('activate', function(event) {
 self.addEventListener('fetch', event => {
 	//console.log('The service worker is serving the asset.', event.request);
   
-  if(event.request.method != 'GET') return;
-  
-  // check if the request is for JSON
-  if(event.request.url.includes(':1337')){
-    event.respondWith(fromDB(event.request).catch((error) => {
-      console.log(error);
-    }));
-    event.waitUntil(updateDB(event.request));
-  }else{
-    event.respondWith(fromCache(event.request).catch((error) => {
-      console.log(error);
-    }));
-  
-    event.waitUntil(updateCache(event.request));
+  switch(event.request.method) {
+    case 'GET':
+      console.log('GET request!');
+      // check if the request is for JSON
+      if(event.request.url.includes(':1337')){
+        event.respondWith(fromDB(event.request).catch((error) => {
+          console.log(error);
+        }));
+        event.waitUntil(updateDB(event.request));
+      }else{
+        event.respondWith(fromCache(event.request).catch((error) => {
+          console.log(error);
+        }));
+      
+        event.waitUntil(updateCache(event.request));
+      }
+      break;
+    case 'POST':
+      console.log("POST request!", event.request);
+      if(!navigator.onLine){
+        // offline
+        // add data to IndexedDB
+        console.log('OFFLINE:', event);
+        
+        // event.respondWith(addReviewDB(event.request));
+      }else{
+        // online
+        // check if there are data in pending in IndexedDB
+        // event.waitUntil(updateReviews(event.request));
+      }
+      break;
   }
+
+  //if(event.request.method != 'GET') return;
+  
+  
 });
 
 function precache() {
@@ -114,4 +136,45 @@ function fromDB(request){
   return  db.urls.get(request.url).then(function (matching) {
     return (matching) ? new Response(JSON.stringify(matching.data)) : fetch(request);
   });
+}
+
+// add review to IndexedDB
+function addReviewDB(request){
+  // serialize(request).then(serialized => {
+  // 
+  // });
+}
+
+// send all offline reviews to server
+function updateReviewDB(request){
+  // return db.reviews_pending().then(data => {
+  // 
+  // });
+}
+
+function serialize(request){
+  let headers = {};
+
+  for(let entry of request.headers.entries()){
+    headers[entry[0]] = entry[1];
+  }
+
+  let serialized = {
+    url: request.url,
+    headers: headers,
+    method: request.method,
+    mode: request.mode,
+    credentials: request.credentials,
+    cache: request.cache,
+    redirect: request.redirect,
+    referrer: request.referrer
+  };
+
+  if(request.method !== 'GET' && request.method !== 'HEAD'){
+    return request.clone().text().then(body => {
+      serialized.body = body;
+      return Promise.resolve(serialized);
+    });
+  }
+  return Promise.resolve(serialized);
 }
