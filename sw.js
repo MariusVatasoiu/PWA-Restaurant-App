@@ -59,26 +59,9 @@ self.addEventListener('fetch', event => {
         // offline
         // add data to IndexedDB
         console.log('OFFLINE:', event);
-        event.respondWith(//() => {
-          //return serialize(event.request).then(serialized => {
-            new Response(
-              JSON.stringify([{
-                text: 'You are offline and I know it well.',
-                author: 'The Service Worker Cookbook',
-                id: 1,
-                isSticky: true
-              }]), 
-              {
-                status: 202,
-                headers: { 'Content-Type': 'application/json' }
-              }
-            )   
-            //console.log('fakeResponse:', fakeResponse);
-            
-            //return fakeResponse.clone();
-
-          //}).catch(error => {console.log(error)});
-        );
+        event.respondWith(fakeResponse(event.request).catch(error => {
+          console.log(error);
+        }));
         
         event.waitUntil(addReviewDB(event.request));
       }else{
@@ -170,6 +153,24 @@ function updateReviewDB(request){
   // return db.reviews_pending().then(data => {
   // 
   // });
+}
+
+function fakeResponse(request){
+  return serialize(request).then(serialized => {
+    serialized.body = JSON.parse(serialized.body);
+    serialized.body.createdAt = 'in pending';
+    serialized.body.updatedAt = 'in pending';
+    serialized.body.id = 0;
+    return new Response( 
+      JSON.stringify(serialized.body),
+      {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      }
+    ); 
+
+  }).catch(error => {console.log(error)});
+  
 }
 
 function serialize(request){

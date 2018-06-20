@@ -236,12 +236,17 @@ const createReviewHTML = (review) => {
 	reviewTitle.appendChild(name);
 
   const date = document.createElement('p');
-  const reviewDate = new Date(review.updatedAt);
-  const reviewDay = String(reviewDate.getDay()+1).padStart(2, '0');
-  const reviewMonth = String(reviewDate.getMonth()+1).padStart(2, '0');
-  const reviewYear = reviewDate.getFullYear();
+  if(review.updatedAt !== 'in pending'){
+    const reviewDate = new Date(review.updatedAt);
+    const reviewDay = String(reviewDate.getDay()+1).padStart(2, '0');
+    const reviewMonth = String(reviewDate.getMonth()+1).padStart(2, '0');
+    const reviewYear = reviewDate.getFullYear();
+    
 
-  date.innerHTML = `${reviewDay}.${reviewMonth}.${reviewYear}`;
+    date.innerHTML = `${reviewDay}.${reviewMonth}.${reviewYear}`;
+  }else{
+    date.innerHTML = review.updatedAt;
+  }
 	date.className = 'col text-right';
 	reviewTitle.appendChild(date);
 
