@@ -4,7 +4,7 @@ self.importScripts("js/lib/dexie.js");
 var db = new Dexie("restaurants");
 db.version(1).stores({
   urls: 'url,data',
-  reviews_pending: 'url,data'
+  reviews_pending: '++id,data'
 });
 db.open();
 
@@ -12,9 +12,9 @@ db.open();
 var cacheWhitelist = ['cache-and-update-v1'];
 var CACHE = cacheWhitelist[0];
 
-self.addEventListener('install', function(evt) {
+self.addEventListener('install', function(event) {
 	console.log('The service worker is being installed.');	
-	evt.waitUntil(precache());
+	event.waitUntil(precache());
 });
 
 self.addEventListener('activate', function(event) {
@@ -28,7 +28,7 @@ self.addEventListener('activate', function(event) {
             return caches.delete(cacheName);
           }
         })
-      ).then(() => { console.log('AAAAAAAAAAA'); });
+      );
     })
   );
 });
@@ -56,24 +56,19 @@ self.addEventListener('fetch', event => {
     case 'POST':
       console.log("POST request!", event.request);
       if(!navigator.onLine){
-        // offline
-        // add data to IndexedDB
-        console.log('OFFLINE:', event);
+        // offline | add data to IndexedDB
+        console.log('OFFLINE:', event.request);
         event.respondWith(fakeResponse(event.request).catch(error => {
           console.log(error);
         }));
         
-        event.waitUntil(addReviewDB(event.request));
+        event.waitUntil(addReviewOffline(event.request));
       }else{
-        // online
-        // check if there are data in pending in IndexedDB
-        // event.waitUntil(updateReviews(event.request));
+        // online | check if there are data in pending in IndexedDB
+        event.waitUntil(flushReviewsOffline());
       }
       break;
   }
-
-  //if(event.request.method != 'GET') return;
-  
   
 });
 
@@ -142,17 +137,31 @@ function fromDB(request){
 }
 
 // add review to IndexedDB
-function addReviewDB(request){
+function addReviewOffline(request){
   return serialize(request).then(serialized => {
-    return db.reviews_pending.put({url: serialized.url, data: serialized});
+    return db.reviews_pending.put({data: serialized});
   });
 }
 
 // send all offline reviews to server
-function updateReviewDB(request){
-  // return db.reviews_pending().then(data => {
-  // 
-  // });
+function flushReviewsOffline(){
+  console.log('Flush Reviews from IndexedDB!');
+  db.reviews_pending.toArray().then(reviews => {
+    let sending = reviews.reduce((prevPromise, serialized) => {
+      return prevPromise.then(() => {
+        return deserialize(serialized).then(request => {
+          return fetch(request);
+        });
+      });
+    }, Promise.resolve());
+    return sending;
+  }).then(() => {
+    console.log('Clear IndexedDB!');
+    db.reviews_pending.clear();
+  }).catch(error => {
+    console.log(error);
+  });
+  
 }
 
 function fakeResponse(request){
@@ -164,13 +173,14 @@ function fakeResponse(request){
     return new Response( 
       JSON.stringify(serialized.body),
       {
-        status: 200,
+        status: 202,
         headers: { 'Content-Type': 'application/json' }
       }
     ); 
 
-  }).catch(error => {console.log(error)});
-  
+  }).catch(error => {
+    console.log(error);
+  });  
 }
 
 function serialize(request){
@@ -198,4 +208,8 @@ function serialize(request){
     });
   }
   return Promise.resolve(serialized);
+}
+
+function deserialize(data){
+  return Promise.resolve(new Request(data.data.url, data.data));
 }
