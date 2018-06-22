@@ -12,24 +12,13 @@ var compress = require('compression');
 var connect = require('gulp-connect');
 var modRewrite = require('connect-modrewrite');
 
-var combineJS = [
-  'src/js/register_sw.js',
-  'src/js/dbhelper.js'
-];
-var individualJS = [
-  'src/js/indb-test/index.js',
-  'src/js/lib/lazyload.min.js',
-  'src/js/main.js',
-  'src/js/restaurant_info.js'
-];
-
 gulp.task('default',['copy-html', 'copy-images', 'sw'], function(){
   console.log('Done!');
 });
 
-gulp.task('run',['default', 'browserSync'], function(){
-  console.log('Starting the app');
-});
+// gulp.task('run',['default', 'browserSync'], function(){
+//   console.log('Starting the app');
+// });
 
 //gulp.task('watch', ['browserSync', 'styles', 'copy-html', 'sw', 'scripts'], function(){
 gulp.task('watch', ['browserSync', 'styles', 'copy-html', 'sw'], function(){
@@ -125,7 +114,7 @@ gulp.task('browserSync', function(){
   });
 });
 
-gulp.task('connect', ['default', 'connect-https'], function() {
+gulp.task('run', ['default', 'connect-https'], function() {
   console.log('Starting the app');
   connect.server({
     root: 'dist',
