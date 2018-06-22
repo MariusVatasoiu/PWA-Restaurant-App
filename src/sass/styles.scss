@@ -361,6 +361,7 @@ nav h1 a {
   &.active:before{
     content: "\2605";
     position: absolute;
+    color: $primary-color;
   }
 }
 
