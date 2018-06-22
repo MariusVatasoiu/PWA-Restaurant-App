@@ -22,7 +22,7 @@ For the **Restaurant Reviews** projects, you will incrementally convert a static
 1. Clone this repository and navigate in the root folder
 2. Run `npm install` to install all the dependencies
 3. To run the app without problems, please disable warnings for self signed certificate in Chrome:
-`chrome://flags/#allow-insecure-localhost` and select Enabled
+`chrome://flags/#allow-insecure-localhost` and select **Enabled**
 2. Run `gulp run` to start the app 
 
 Enjoy!
