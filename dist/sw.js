@@ -64,12 +64,14 @@ self.addEventListener('fetch', event => {
         
         event.waitUntil(addReviewOffline(event.request));
       }else{
-        // online | check if there are data in pending in IndexedDB
-        event.waitUntil(flushReviewsOffline());
+        // online but for now don't do anything special
       }
       break;
   }
-  
+  if(navigator.onLine){
+    // online | check if there are data in pending in IndexedDB
+    event.waitUntil(flushReviewsOffline());
+  }
 });
 
 function precache() {
