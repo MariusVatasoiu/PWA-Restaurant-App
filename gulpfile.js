@@ -9,6 +9,8 @@ var sourcemaps = require('gulp-sourcemaps');
 var useref = require('gulp-useref');
 var gulpif = require('gulp-if');
 var compress = require('compression');
+var connect = require('gulp-connect');
+var modRewrite = require('connect-modrewrite');
 
 var combineJS = [
   'src/js/register_sw.js',
@@ -114,10 +116,38 @@ gulp.task('browserSync', function(){
     //   cert: fs.readFileSync("ssl/filename.crt", "utf8")
     //   //passphrase: 'password'
     // },
+    //httpModule: 'http2',
     // https: {
-    //   key: "ssl/2/server.key",
-    //   cert: "ssl/2/server.crt"
-    //   //passphrase: 'password'
+    //   key: "ssl/privkey.pem",
+    //   cert: "ssl/cacert.crt",
+    //   passphrase: 'vatasoiu'
     // }
+  });
+});
+
+gulp.task('connect', ['default', 'connect-https'], function() {
+  console.log('Starting the app');
+  connect.server({
+    root: 'dist',
+    name: 'HTTP',
+    port: 80,
+    https: false,
+    debug: false,
+    middleware: function(connect, options) {   
+      return [
+        modRewrite([
+          '/* https://localhost:443/ [L,R=301]'
+        ])
+      ];
+    }
+  });
+});
+
+gulp.task('connect-https', function() {
+  connect.server({
+    root: 'dist',
+    name: 'HTTPS',
+    port: 443,
+    https: true
   });
 });
