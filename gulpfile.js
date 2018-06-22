@@ -11,6 +11,7 @@ var gulpif = require('gulp-if');
 var compress = require('compression');
 var connect = require('gulp-connect');
 var modRewrite = require('connect-modrewrite');
+var open = require('gulp-open');
 
 gulp.task('default',['copy-html', 'copy-images', 'sw'], function(){
   console.log('Done!');
@@ -130,6 +131,8 @@ gulp.task('run', ['default', 'connect-https'], function() {
       ];
     }
   });
+  gulp.src(__filename)
+  .pipe(open({uri: 'https://localhost'}));
 });
 
 gulp.task('connect-https', function() {
