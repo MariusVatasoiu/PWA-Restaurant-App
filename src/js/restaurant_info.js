@@ -5,20 +5,14 @@ var map;
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
-  //fetchRestaurantFromURL((error, restaurant) => {
   fetchRestaurantFromURL().then(restaurant => {
-    //if (error) { // Got an error!
-    //  //console.error(error);
-    //  console.log(error);
-    //} else {
-      self.map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 16,
-        center: restaurant.latlng,
-        scrollwheel: false
-      });
-      fillBreadcrumb();
-      DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
-    //}
+    self.map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 16,
+      center: restaurant.latlng,
+      scrollwheel: false
+    });
+    fillBreadcrumb();
+    DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
   }).catch(error => console.error(error));
 }
 
@@ -44,11 +38,7 @@ const sendReview = (event) => {
     "comments": reviewCommentVal
   };
 
-  fetch(DBHelper.API_REVIEWS_URL, {
-    body: JSON.stringify(data),
-    method: 'POST'
-  })
-  .then(response => response.json())
+  DBHelper.sendReview(data)
   .then(response => {
     document.getElementById('reviews-list').appendChild(createReviewHTML(response));
     // clear form
@@ -80,7 +70,6 @@ const updateFavorite = (event) => {
 }
 
 document.getElementById('send-review').addEventListener('click', sendReview);
-document.getElementById('favorite').addEventListener('click', updateFavorite);
 
 /**
  * Add event 'change' on every input from form.
@@ -135,25 +124,13 @@ const validateForm = () => {
  */
 const fetchRestaurantFromURL = () => {
   if (self.restaurant) { // restaurant already fetched!
-    // callback(null, self.restaurant)
-    // return;
     return Promise.resolve(self.restaurant);
   }
   const id = getParameterByName('id');
   if (!id) { // no id found in URL
     let error = 'No restaurant id in URL'
-    // callback(error, null);
     return Promise.reject(new Error(error));
   } else {
-    // DBHelper.fetchRestaurantById(id, (error, restaurant) => {
-    //   self.restaurant = restaurant;
-    //   if (!restaurant) {
-    //     console.error(error);
-    //     return;
-    //   }
-    //   fillRestaurantHTML();
-    //   callback(null, restaurant)
-    // });
     return DBHelper.fetchRestaurantById(id)
     .then(restaurant => {
       self.restaurant = restaurant;
@@ -180,6 +157,7 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
   const favorite = document.getElementById('favorite');
   if(restaurant.is_favorite) favorite.classList.add('active');
   favorite.title = (restaurant.is_favorite) ? 'Remove from Favorites' : 'Add to Favorites';
+  favorite.addEventListener('click', updateFavorite);
 
   const address = document.getElementById('restaurant-address');
   address.innerHTML = restaurant.address;
