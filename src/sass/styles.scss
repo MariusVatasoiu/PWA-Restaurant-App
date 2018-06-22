@@ -193,6 +193,7 @@ nav h1 a {
   line-height: 1.3;
   /* margin: 20px 0 10px; */
   text-transform: uppercase;
+  padding-right: 40px;
 }
 #restaurants-list p {
   margin: 0;
@@ -214,7 +215,13 @@ nav h1 a {
 	background-color: #d08702;
 }
 .restaurant-content{
-	padding-top: 20px;
+  padding-top: 20px;
+  position: relative;
+}
+.restaurant-content > .favorite{
+  position: absolute;
+  top: 20px;
+  right: 0px;
 }
 
 /* ====================== Restaurant Details ====================== */
@@ -335,6 +342,28 @@ nav h1 a {
 	color: #FFF;
 	font-weight: bold;
 }
+.pull-right{
+  float: right;
+}
+.position-relative{
+  position: relative;
+}
+.position-absolute{
+  position: absolute;
+}
+.favorite{
+  font-size: 40px;
+  line-height: 22px;
+  &:hover{
+    cursor: pointer;
+  }
+  &:hover:before,
+  &.active:before{
+    content: "\2605";
+    position: absolute;
+  }
+}
+
 
 /* Forms */
 fieldset{
@@ -391,6 +420,9 @@ fieldset{
 	.restaurant-content{
 		padding-top: 0;
 		padding-left: 20px;
+  }
+  .restaurant-content>.favorite{
+    top: 0px;
   }
 }
 

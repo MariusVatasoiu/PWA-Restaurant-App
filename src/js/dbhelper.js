@@ -235,6 +235,22 @@ class DBHelper {
   }
 
   /**
+   * Set Restaurant as Favorite
+   */
+  static setFavorite(id, is_favorite){
+    let data = {
+      "is_favorite": is_favorite
+    };
+
+    return fetch(DBHelper.API_RESTAURANTS_URL+'/'+id+'/', {
+      body: JSON.stringify(data),
+      method: 'PUT'
+    })
+    .then(response => response.json())
+    .catch(error => console.log(error));
+  }
+
+  /**
    * Restaurant page URL.
    */
   static urlForRestaurant(restaurant) {

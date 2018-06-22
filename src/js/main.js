@@ -11,6 +11,7 @@ var myLazyLoad = new LazyLoad();
 document.addEventListener('DOMContentLoaded', (event) => {
   fetchNeighborhoods();
   fetchCuisines();
+
   console.log('test');
 });
 
@@ -159,9 +160,9 @@ const createRestaurantHTML = (restaurant) => {
   article.className = 'flex-container';
   article.setAttribute('aria-label', restaurant.name);
 	const articleThumb = document.createElement('div');
-	articleThumb.className = 'col-sm-6 col-md-5';
+	articleThumb.className = 'col-12 col-sm-6 col-md-5';
 	const articleContent = document.createElement('div');
-	articleContent.className = 'col-sm-6 col-md-7 restaurant-content';
+	articleContent.className = 'col-12 col-sm-6 col-md-7 restaurant-content';
 
 	/* Thumbnail */
   const image = document.createElement('img');
@@ -195,7 +196,18 @@ const createRestaurantHTML = (restaurant) => {
   more.innerHTML = 'View Details';
   more.href = DBHelper.urlForRestaurant(restaurant);
   more.setAttribute('aria-label', 'View Details about '+ restaurant.name);
-	articleContent.append(more);
+  articleContent.append(more);
+  
+  const favorite = document.createElement('span');
+  favorite.classList.add('favorite', 'pull-right');
+  if(restaurant.is_favorite) favorite.classList.add('active');
+  favorite.innerHTML = '☆';
+  favorite.setAttribute('data-id', restaurant.id);
+  favorite.setAttribute('role', 'button');
+  favorite.title = (restaurant.is_favorite) ? 'Remove from Favorites' : 'Add to Favorites';
+  favorite.addEventListener('click', updateFavorite);
+  articleContent.append(favorite);
+
 	article.append(articleContent);
 
   return article;
@@ -212,5 +224,24 @@ const addMarkersToMap = (restaurants = self.restaurants) => {
       window.location.href = marker.url
     });
     self.markers.push(marker);
+  });
+}
+
+/**
+ * 
+ * @param {*} event 
+ * Toggle restaurant as Favorite
+ */
+const updateFavorite = (event) => {
+  const id = Number(event.target.getAttribute('data-id'));
+  const is_favorite = !event.target.classList.contains('active');
+
+  DBHelper.setFavorite(id, is_favorite)
+  .then(response => {
+    event.target.classList.toggle('active');
+    event.target.title = (response.is_favorite) ? 'Remove from Favorites' : 'Add to Favorites';    
+  })
+  .catch(error => {
+    console.log(error);
   });
 }

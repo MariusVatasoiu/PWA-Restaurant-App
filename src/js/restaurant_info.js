@@ -60,7 +60,27 @@ const sendReview = (event) => {
   });
 }
 
+/**
+ * 
+ * @param {*} event 
+ * Toggle restaurant as Favorite
+ */
+const updateFavorite = (event) => {
+  const id = Number(getParameterByName('id'));
+  const is_favorite = !event.target.classList.contains('active');
+
+  DBHelper.setFavorite(id, is_favorite)
+  .then(response => {
+    event.target.classList.toggle('active');
+    event.target.title = (response.is_favorite) ? 'Remove from Favorites' : 'Add to Favorites';    
+  })
+  .catch(error => {
+    console.log(error);
+  });
+}
+
 document.getElementById('send-review').addEventListener('click', sendReview);
+document.getElementById('favorite').addEventListener('click', updateFavorite);
 
 /**
  * Add event 'change' on every input from form.
@@ -156,6 +176,10 @@ const fetchRestaurantFromURL = () => {
 const fillRestaurantHTML = (restaurant = self.restaurant) => {
   const name = document.getElementById('restaurant-name');
   name.innerHTML = restaurant.name;
+
+  const favorite = document.getElementById('favorite');
+  if(restaurant.is_favorite) favorite.classList.add('active');
+  favorite.title = (restaurant.is_favorite) ? 'Remove from Favorites' : 'Add to Favorites';
 
   const address = document.getElementById('restaurant-address');
   address.innerHTML = restaurant.address;

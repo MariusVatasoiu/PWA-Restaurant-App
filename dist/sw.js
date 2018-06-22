@@ -68,6 +68,7 @@ self.addEventListener('fetch', event => {
       }
       break;
   }
+  
   if(navigator.onLine){
     // online | check if there are data in pending in IndexedDB
     event.waitUntil(flushReviewsOffline());
